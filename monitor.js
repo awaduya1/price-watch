@@ -40,6 +40,7 @@ async function sendMail(changes) {
 }
 
 async function run() {
+  const changes = [];
   const products = {
     hitotose: "https://ojikaya.jp/products/hitotose",
     gift366: "https://ojikaya.jp/products/366",
