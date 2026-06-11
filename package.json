@@ -3,6 +3,23 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
-    "cheerio": "^1.1.0"
-  }
+    "cheerio": "^1.1.0",
+    "nodemailer": "^8.0.11"
+  },
+  "description": "",
+  "main": "monitor.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/awaduya1/price-watch.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/awaduya1/price-watch/issues"
+  },
+  "homepage": "https://github.com/awaduya1/price-watch#readme"
 }
