@@ -15,10 +15,15 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20
 
       - name: Install dependencies
         run: npm install
+
+      - name: Debug
+        run: |
+          cat package.json
+          npm list nodemailer
 
       - name: Run monitor
         run: node monitor.js
