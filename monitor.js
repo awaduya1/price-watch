@@ -1,4 +1,5 @@
 import fs from "fs";
+import nodemailer from "nodemailer";
 
 async function getPrice(url) {
   const res = await fetch(url);
@@ -13,6 +14,29 @@ async function getPrice(url) {
       .replace(/,/g, "")
       .replace("円", "")
   );
+}
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+  user: process.env.GMAIL_USER,
+  pass: process.env.GMAIL_PASS,
+},
+});
+
+async function sendMail(changes) {
+  const text = changes
+    .map(c =>
+      `${c.name}: ${c.old}円 → ${c.new}円 (${c.diff > 0 ? "+" : ""}${c.diff}円)`
+    )
+    .join("\n");
+
+    await transporter.sendMail({
+    from: process.env.GMAIL_USER,
+    to: "info@awaduya.com",
+    subject: "おぢかや 価格変動検知",
+    text,
+   });
 }
 
 async function run() {
@@ -36,6 +60,9 @@ async function run() {
   }
 
   const newPrices = {};
+  const changes = [];
+
+   
 
   for (const [name, url] of Object.entries(products)) {
     const price = await getPrice(url);
@@ -45,12 +72,23 @@ async function run() {
     if (oldPrices[name] && oldPrices[name] !== price) {
       const diff = price - oldPrices[name];
 
+      changes.push({
+        name,
+        old: oldPrices[name],
+        new: price,
+        diff,
+      });
+
       console.log(
         `価格変更: ${name} ${oldPrices[name]} → ${price} (${diff > 0 ? "+" : ""}${diff}円)`
       );
     } else {
       console.log(`${name}: ${price}`);
     }
+  }
+
+  if (changes.length > 0) {
+    await sendMail(changes);
   }
 
   fs.writeFileSync("prices.json", JSON.stringify(newPrices, null, 2));
