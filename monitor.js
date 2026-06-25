@@ -61,7 +61,6 @@ async function run() {
   }
 
   const newPrices = {};
-  const changes = [];
 
    
 
