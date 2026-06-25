@@ -88,8 +88,14 @@ async function run() {
   }
 
   if (changes.length > 0) {
-    await sendMail(changes);
+    await sendMail([
+  {
+    name: "TEST",
+    old: 1000,
+    new: 1100,
+    diff: 100
   }
+]);
 
   fs.writeFileSync("prices.json", JSON.stringify(newPrices, null, 2));
 
