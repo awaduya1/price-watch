@@ -87,7 +87,7 @@ async function run() {
     }
   }
 
-  if (changes.length > 0) {
+ 
     await sendMail([
   {
     name: "TEST",
