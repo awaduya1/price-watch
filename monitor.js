@@ -41,7 +41,6 @@ async function sendMail(changes) {
 
 async function run() {
   const changes = [];
-   const pageChanges = [];
   const products = {
     hitotose: "https://ojikaya.jp/products/hitotose",
     gift366: "https://ojikaya.jp/products/366",
@@ -61,30 +60,9 @@ async function run() {
     oldPrices = {};
   }
 
-  let oldNews = "";
-
-  try {
-    oldNews = fs.readFileSync("news.txt", "utf8");
-  } catch {
-    oldNews = "";
-  }
+  
    const newPrices = {};
     
-   const newsRes = await fetch("https://www.awaduya.com/news/");
-   const newsHtml = await newsRes.text();
-   
-   if (oldNews && oldNews !== newsHtml) {
-     pageChanges.push({
-       name: "あわづやNEWS",
-       old: "更新前",
-       new: "更新後",
-       diff: "NEWS更新"
-     });
-
-     console.log("NEWS更新を検知しました");
-   }
-
-   fs.writeFileSync("news.txt", newsHtml);
    
 
   for (const [name, url] of Object.entries(products)) {
@@ -111,10 +89,7 @@ async function run() {
   }
 
  
-     const allChanges = [
-     ...changes,
-     ...pageChanges
-   ];
+     const allChanges = [...changes,];
 
    if (allChanges.length > 0) {
      await sendMail(allChanges);
